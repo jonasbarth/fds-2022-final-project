@@ -127,4 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-dataset
+
+# custom
+og_dataset
+
