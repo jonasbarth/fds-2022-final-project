@@ -8,6 +8,9 @@ Final Project for Fundamentals of Data Science 2022.
 * Javier Martinez
 * Jonas Barth
 
+# Resources
+[Paper](https://s3.us-east-1.amazonaws.com/climate-change-ai/papers/neurips2020/57/paper.pdf) that we base the project on.
+
 # Data
 https://drive.google.com/drive/folders/1l-0gi2-_5sYK6fYMycisbETqrSNeA0Xs?usp=share_link
 
