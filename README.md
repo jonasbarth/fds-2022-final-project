@@ -50,7 +50,7 @@ whereas the _CNN_ might train on the actual image with a selection of channels.
 
 #### Evaluate
 
-### 3. 
+### 3. SVM (Maybe)
 
 #### Preprocess
 
