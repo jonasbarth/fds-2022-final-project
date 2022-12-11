@@ -18,5 +18,5 @@ if __name__ == '__main__':
         elif isnan.any():
             any_nan_files.append(filename)
 
-    pd.DataFrame(any_nan_files, columns=['filename']).to_csv('any_nan_files.csv')
-    pd.DataFrame(all_nan_files, columns=['filename']).to_csv('all_nan_files.csv')
+    pd.DataFrame(any_nan_files, columns=['filename']).to_csv('out/any_nan_files.csv')
+    pd.DataFrame(all_nan_files, columns=['filename']).to_csv('out/all_nan_files.csv')
