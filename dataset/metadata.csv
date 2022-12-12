@@ -1,4 +1,4 @@
-src,slice_num,img_slice,mask_slice,mask_mean_0,mask_mean_1,mask_mean_2,img_mean,lng,lat,partition
+src,slice_num,img_slice,mask_slice,glaciers,clean_glaciers,debris_glaciers,img_mean,lng,lat,partition
 0,003,og_dataset/splits/train/slice_0_img_003.npy,og_dataset/splits/train/slice_0_mask_003.npy,0.0,0.0,0.0,189.76698303222656,379341.75438596494,3572176.06391926,train
 0,004,og_dataset/splits/train/slice_0_img_004.npy,og_dataset/splits/train/slice_0_mask_004.npy,0.0,0.0,0.0,198.22950744628906,394523.68421052635,3572176.06391926,train
 0,015,og_dataset/splits/train/slice_0_img_015.npy,og_dataset/splits/train/slice_0_mask_015.npy,0.0,0.0,0.0,79.9453125,333795.9649122807,3587358.19175778,train
