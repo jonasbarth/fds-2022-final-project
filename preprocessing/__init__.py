@@ -1,1 +1,1 @@
-from .hog import downsample, apply_gaussian, create_hog
+from .hog import downsample, apply_gaussian, create_hog, save_hog

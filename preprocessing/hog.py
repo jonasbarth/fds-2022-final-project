@@ -2,6 +2,8 @@
 from skimage.feature import hog
 from skimage.filters import gaussian
 from skimage.transform import resize
+import numpy as np
+
 
 
 def downsample(image, new_width, new_height):
@@ -27,3 +29,13 @@ def create_hog(image):
     """Creates a histogram of gradients from the provided image."""
     return hog(image, orientations=8, pixels_per_cell=(16, 16), cells_per_block=(1, 1), visualize=True, channel_axis=-1)[1]
 # TODO function for saving histograms
+
+
+def save_hog(hog_image, path):
+    """Saves the hog image as a numpy array at the given path.
+
+    :arg
+    hog_image (np.array) - a numpy array.
+    path - the path where the hog_image should be saved.
+    """
+    np.save(path, hog_image)
