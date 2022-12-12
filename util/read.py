@@ -20,15 +20,16 @@ def get_img_file_names(start_dir):
     for directory, _, _ in os.walk(start_dir):
         files.extend(glob(os.path.join(directory, pattern)))
 
-    return files
+    return list(map(lambda filename: filename.replace('\\', '/'), files))
 
 
-def load_arrays(filenames, lazy=True):
+def load_arrays(filenames, lazy=True, batch_size=1):
     """Function for loading numpy arrays from filenames.
 
     :arg
     filenames (iterable) - an iterable of filenames.
     lazy (bool) - True if a generator will be returned. False if a list with all arrays will be returned.
+    batch_size (int) - for lazy loading, the batch_size indicates how many arrays will be returned at once.
 
     :return
     a tuple containing a list or generator of numpy arrays, and the filenames associated with them.
@@ -36,9 +37,14 @@ def load_arrays(filenames, lazy=True):
 
     try:
         if lazy:
-            for filename in filenames:
-                yield np.load(filename), filename
+            array_shape = (batch_size, *np.load(filenames[0]).shape)
+            batch = np.zeros(array_shape)
+            for i, filename in enumerate(filenames):
+                batch[i % batch_size] = np.load(filename)
 
+                if i % batch_size == 0:
+                    yield batch, filenames[i:i + batch_size]
+                    batch = np.zeros(array_shape)
         else:
             return [(np.load(filename), filename) for filename in filenames]
     except ValueError as e:
