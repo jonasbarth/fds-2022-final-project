@@ -3,6 +3,69 @@ from skimage.feature import hog
 from skimage.filters import gaussian
 from skimage.transform import resize
 import numpy as np
+from sklearn.base import BaseEstimator, TransformerMixin
+
+
+class DownSampler(BaseEstimator, TransformerMixin):
+    """A scikit pipeline step for downsampling."""
+
+    def __init__(self, new_width, new_height):
+        self.new_width = new_width
+        self.new_height = new_height
+
+    def fit(self, X):
+        return self
+
+    def transform(self, X):
+        downsampled = np.zeros((X.shape[0], self.new_width, self.new_height, X.shape[-1]))
+        for i in range(X.shape[0]):
+            downsampled[i] = downsample(X[i], self.new_width, self.new_height)
+        return downsampled
+
+
+class Gaussian(BaseEstimator, TransformerMixin):
+    """A scikit pipeline step for applying gaussian noise."""
+
+    def __init__(self, sigma):
+        self.sigma = sigma
+
+    def fit(self, X):
+        return self
+
+    def transform(self, X):
+        for i in range(X.shape[0]):
+            X[i] = apply_gaussian(X[i], self.sigma)
+        return X
+
+
+class Hog(BaseEstimator, TransformerMixin):
+    """A scikit pipeline step for creating a Histogram of Gradients."""
+
+    def __init__(self):
+        pass
+
+    def fit(self, X):
+        return self
+
+    def transform(self, X):
+        hogged = np.zeros(X.shape[:-1])
+        for i in range(X.shape[0]):
+            hogged[i] = create_hog(X[i])
+
+        return hogged
+
+class HogSaver(BaseEstimator, TransformerMixin):
+    """A scikit pipeline step for saving a Histogram of Gradients."""
+
+    def __init__(self, paths):
+        self.paths = paths
+
+    def fit(self, X):
+        return self
+
+    def transform(self, X):
+        for i, path in enumerate(self.paths):
+            save_hog(X[i], path)
 
 
 
