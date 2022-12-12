@@ -13,9 +13,9 @@ Final Project for Fundamentals of Data Science 2022.
 
 # Data (ask Jonas to start lab to make the data available)
 AWS S3 Links:
-* s3://fds-final-project/dev.zip
-* s3://fds-final-project/test.zip
-* s3://fds-final-project/train.zip
+* [dev](https://fds-final-project.s3.amazonaws.com/dev.zip)
+* [test](https://fds-final-project.s3.amazonaws.com/test.zip)
+* [train](https://fds-final-project.s3.amazonaws.com/train.zip)
 
 # Installing Requirements
 
