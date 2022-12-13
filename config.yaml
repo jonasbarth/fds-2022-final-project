@@ -1,4 +1,4 @@
-data:
+preprocess:
   source:
     path:
       dev: data/image/dev
@@ -9,4 +9,17 @@ data:
       dev: data/hog/dev
       test: data/hog/test
       train: data/hog/train
+model:
+  hog:
+    dev:
+      data: data/hog/dev/hog.npy
+      labels: data/hog/dev/labels.npy
+    test:
+      data: data/hog/test/hog.npy
+      labels: data/hog/test/labels.npy
+    train:
+      data: data/hog/train/hog.npy
+      labels: data/hog/train/labels.npy
+
+
 
