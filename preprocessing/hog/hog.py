@@ -6,6 +6,16 @@ import numpy as np
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 
+class ChannelSelector(BaseEstimator, TransformerMixin):
+    """A scikit pipeline step for selecting channels from an image."""
+    def __init__(self, channels):
+        self.channels = channels
+
+    def fit(self, X):
+        return self
+
+    def transform(self, X):
+        return np.take(X, self.channels, axis=3)
 
 class NanReplacer(BaseEstimator, TransformerMixin):
     """A scikit pipeline step for replacing nan values."""
