@@ -23,7 +23,7 @@ def get_img_file_names(start_dir):
     return list(map(lambda filename: filename.replace('\\', '/'), files))
 
 
-def load_arrays(filenames, lazy=True, batch_size=1):
+def load_arrays_batch(filenames, batch_size=1):
     """Function for loading numpy arrays from filenames.
 
     :arg
@@ -32,20 +32,31 @@ def load_arrays(filenames, lazy=True, batch_size=1):
     batch_size (int) - for lazy loading, the batch_size indicates how many arrays will be returned at once.
 
     :return
-    a tuple containing a list or generator of numpy arrays, and the filenames associated with them.
+    a tuple containing a generator of numpy arrays, and the filenames associated with them.
     """
-
     try:
-        if lazy:
-            array_shape = (batch_size, *np.load(filenames[0]).shape)
-            batch = np.zeros(array_shape)
-            for i, filename in enumerate(filenames):
-                batch[i % batch_size] = np.load(filename)
+        array_shape = (batch_size, *np.load(filenames[0]).shape)
+        batch = np.zeros(array_shape)
+        for i, filename in enumerate(filenames):
+            batch[i % batch_size] = np.load(filename)
 
-                if i % batch_size == 0:
-                    yield batch, filenames[i:i + batch_size]
-                    batch = np.zeros(array_shape)
-        else:
-            return [(np.load(filename), filename) for filename in filenames]
+            if i % batch_size == 0:
+                yield batch, filenames[i:i + batch_size]
+                batch = np.zeros(array_shape)
+    except ValueError as e:
+        logging.warning(f'Problem while loading file: {filename}. {e}')
+
+
+def load_arrays_all(filenames):
+    """Function for loading numpy arrays from filenames.
+
+    :arg
+    filenames (iterable) - an iterable of filenames.
+
+    :return
+    a tuple containing a list of numpy arrays, and the filenames associated with them.
+    """
+    try:
+        return np.array([np.load(filename) for filename in filenames]), filenames
     except ValueError as e:
         logging.warning(f'Problem while loading file: {filename}. {e}')
