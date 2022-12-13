@@ -1,12 +1,12 @@
 data:
   source:
     path:
-      - ./data/image/dev
-      - ./data/image/test
-      - ./data/image/train
+      dev: data/image/dev
+      test: data/image/test
+      train: data/image/train
   hog:
     path:
-      - ./data/hog/dev
-      - ./data/hog/test
-      - ./data/hog/train
+      dev: data/hog/dev
+      test: data/hog/test
+      train: data/hog/train
 
