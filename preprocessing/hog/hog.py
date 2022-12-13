@@ -3,8 +3,18 @@ from skimage.feature import hog
 from skimage.filters import gaussian
 from skimage.transform import resize
 import numpy as np
+import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 
+
+class NanReplacer(BaseEstimator, TransformerMixin):
+    """A scikit pipeline step for replacing nan values."""
+
+    def fit(self, X):
+        return self
+
+    def transform(self, X):
+        return np.nan_to_num(X, nan=0)
 
 class DownSampler(BaseEstimator, TransformerMixin):
     """A scikit pipeline step for downsampling."""
@@ -54,8 +64,9 @@ class Hog(BaseEstimator, TransformerMixin):
 
         return hogged
 
-class HogSaver(BaseEstimator, TransformerMixin):
-    """A scikit pipeline step for saving a Histogram of Gradients."""
+
+class HogNpySaver(BaseEstimator, TransformerMixin):
+    """A scikit pipeline step for saving a Histogram of Gradients as .npy files."""
 
     def __init__(self, paths):
         self.paths = paths
@@ -64,9 +75,32 @@ class HogSaver(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, X):
+        if len(self.paths) == 1:
+            try:
+                existing = np.load(*self.paths)
+                to_save = np.vstack((existing, X))
+                save_hog(to_save, *self.paths)
+            except FileNotFoundError:
+                save_hog(X, *self.paths)
+            return
         for i, path in enumerate(self.paths):
             save_hog(X[i], path)
 
+
+class HogCsvSaver(BaseEstimator, TransformerMixin):
+    """A scikit pipeline step for saving a Histogram of Gradients into a single .csv file."""
+
+    def __init__(self, name):
+        self.name = name
+
+    def fit(self, X):
+        return self
+
+    def transform(self, X):
+        hog_rows = list(map(lambda arr: [arr], np.split(X, X.shape[0])))
+        hogs = pd.DataFrame([*hog_rows], columns=['hog'])
+
+        hogs.to_csv(f'{self.name}/hog.csv')
 
 
 def downsample(image, new_width, new_height):
@@ -90,7 +124,10 @@ def apply_gaussian(image, sigma=1):
 
 def create_hog(image):
     """Creates a histogram of gradients from the provided image."""
-    return hog(image, orientations=8, pixels_per_cell=(16, 16), cells_per_block=(1, 1), visualize=True, channel_axis=-1)[1]
+    return \
+    hog(image, orientations=8, pixels_per_cell=(16, 16), cells_per_block=(1, 1), visualize=True, channel_axis=-1)[1]
+
+
 # TODO function for saving histograms
 
 
