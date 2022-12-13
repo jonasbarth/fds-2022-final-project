@@ -19,12 +19,16 @@ if __name__ == '__main__':
     for source_path, hog_path in zip(vars(config.preprocess.source.path).values(), vars(config.preprocess.hog.path).values()):
         filenames = get_img_file_names(source_path)
         # TODO create hog data for each channel
-        for images, names in tqdm(load_arrays_batch(filenames, batch_size=10)):
-            hog_paths = list(map(lambda filename: f'{hog_path}/{filename.split("/")[-1]}', names))
+        for channel in config.preprocess.hog.channels:
+            # subtract 1 since the channels in the config are 1-indexed.
+            channel = np.array(channel)
+            file_name_suffix = '_'.join(map(str, channel))
+            channel = channel - 1
+            for images, names in tqdm(load_arrays_batch(filenames, batch_size=10)):
 
-            p = saving_pipeline(f'{hog_path}/hog.npy')
+                p = saving_pipeline(channel, 214, 214, 1, f'{hog_path}/hog_{file_name_suffix}.npy')
 
-            transformed = p.fit_transform(images)
+                transformed = p.fit_transform(images)
 
 
         labels = []
