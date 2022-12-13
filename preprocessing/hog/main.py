@@ -18,7 +18,7 @@ if __name__ == '__main__':
 
     for source_path, hog_path in zip(vars(config.preprocess.source.path).values(), vars(config.preprocess.hog.path).values()):
         filenames = get_img_file_names(source_path)
-
+        # TODO create hog data for each channel
         for images, names in tqdm(load_arrays_batch(filenames, batch_size=10)):
             hog_paths = list(map(lambda filename: f'{hog_path}/{filename.split("/")[-1]}', names))
 
