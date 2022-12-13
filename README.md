@@ -11,8 +11,11 @@ Final Project for Fundamentals of Data Science 2022.
 # Resources
 [Paper](https://s3.us-east-1.amazonaws.com/climate-change-ai/papers/neurips2020/57/paper.pdf) that we base the project on.
 
-# Data
-https://drive.google.com/drive/folders/1l-0gi2-_5sYK6fYMycisbETqrSNeA0Xs?usp=share_link
+# Data (ask Jonas to start lab to make the data available)
+AWS S3 Links:
+* [dev](https://fds-final-project.s3.amazonaws.com/dev.zip)
+* [test](https://fds-final-project.s3.amazonaws.com/test.zip)
+* [train](https://fds-final-project.s3.amazonaws.com/train.zip)
 
 # Installing Requirements
 
