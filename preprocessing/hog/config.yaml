@@ -9,6 +9,7 @@ hog:
     dev: data/hog/dev
     test: data/hog/test
     train: data/hog/train
+    meta: data/hog/
   normalising: dataset/channel_mean_std.csv
   channels: # the different channels that will be used. In the end, there will be one dataset per channel.
     - [1, 2, 3]

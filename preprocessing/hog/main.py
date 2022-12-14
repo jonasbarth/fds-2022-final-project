@@ -33,8 +33,13 @@ if __name__ == '__main__':
     means = normalising.means.to_numpy()
     stds = normalising.stds.to_numpy()
 
+    hog_metadata = {'channels': [], 'type': [], 'data_path': [], 'label_path': []}
     # go through the dev, test, train, folders.
-    for source_path, hog_path in zip(vars(config.source.path).values(), vars(config.hog.path).values()):
+    for source_path, hog_path_key in zip(vars(config.source.path).values(), vars(config.hog.path)):
+
+        hog_metadata['type'] += [hog_path_key] * 3
+        hog_path = config.hog.path[hog_path_key]
+
         logging.info(f"Reading image files from {source_path}")
         filenames = get_img_file_names(source_path)
 
@@ -46,18 +51,22 @@ if __name__ == '__main__':
         # go through each combination of channels
         for channel in config.hog.channels:
 
+            hog_metadata['channels'].append(channel)
+
             # subtract 1 since the channels in the config are 1-indexed.
             channel = np.array(channel)
-            file_name_suffix = '_'.join(map(str, channel))
             channel = channel - 1
 
+            file_name_suffix = '_'.join(map(str, channel))
+            data_output_path = f'{hog_path}/hog_{file_name_suffix}.npy'
+            hog_metadata['data_path'].append(data_output_path)
+
             for images, names in load_arrays_batch(filenames, batch_size=10):
-                data_output_path = f'{hog_path}/hog_{file_name_suffix}.npy'
                 p = saving_pipeline(means, stds, channel, 214, 214, 1, data_output_path)
 
                 transformed = p.fit_transform(images)
 
-                logging.info(f"Saved {data_output_path}.")
+            logging.info(f"Saved HOG to: {data_output_path}.")
 
         # create a labels file for each image folder (dev, test, train).
         labels = []
@@ -72,4 +81,9 @@ if __name__ == '__main__':
         labels = np.array(labels)
         labels_output_path = f'{hog_path}/labels.npy'
         np.save(labels_output_path, labels)
-        logging.info(f'Saved {labels_output_path}.')
+        logging.info(f'Saved labels to: {labels_output_path}.')
+
+        hog_metadata['label_path'] += [labels_output_path] * 3
+        # create a dataframe for each dataset that we save
+        # channels, path
+        pd.DataFrame(hog_metadata).to_csv(f'{config.hog.path.meta}/metadata.csv')
