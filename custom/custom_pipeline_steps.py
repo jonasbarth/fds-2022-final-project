@@ -81,6 +81,9 @@ class ColorHistogram(BaseEstimator,TransformerMixin):
     
     @staticmethod
     def histogram(slice, bins, density=True):
+        slice = slice[np.logical_not(np.isnan(slice))]
+        if len(slice) == 0:
+            return np.full(len(bins)-1,np.nan)
         return np.histogram(slice, bins, density=density)[0]
 
     
