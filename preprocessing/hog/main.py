@@ -16,17 +16,22 @@ if __name__ == '__main__':
     metadata = pd.read_csv('./dataset/metadata.csv')
     metadata.img_slice = metadata.img_slice.apply(lambda path: path.split('/')[-1])
 
+    normalising = pd.read_csv(config.hog.normalising)
+    means = normalising.means.to_numpy()
+    stds = normalising.stds.to_numpy()
+
     for source_path, hog_path in zip(vars(config.source.path).values(), vars(config.hog.path).values()):
         filenames = get_img_file_names(source_path)
-        # TODO create hog data for each channel
+
         for channel in config.hog.channels:
+
             # subtract 1 since the channels in the config are 1-indexed.
             channel = np.array(channel)
             file_name_suffix = '_'.join(map(str, channel))
             channel = channel - 1
             for images, names in tqdm(load_arrays_batch(filenames, batch_size=10)):
 
-                p = saving_pipeline(channel, 214, 214, 1, f'{hog_path}/hog_{file_name_suffix}.npy')
+                p = saving_pipeline(means, stds, channel, 214, 214, 1, f'{hog_path}/hog_{file_name_suffix}.npy')
 
                 transformed = p.fit_transform(images)
 

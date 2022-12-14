@@ -9,6 +9,7 @@ hog:
     dev: data/hog/dev
     test: data/hog/test
     train: data/hog/train
+  normalising: data/channel_mean_std.csv
   channels:
     - [1, 2, 3]
     - [6, 7, 8]
