@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
     channels = np.array(range(1, 16))
 
-    data = {'channel': channels, 'means': means, 'std': stds}
+    data = {'channel': channels, 'means': means, 'stds': stds}
 
     print(f'Writing file to {args.to_path}')
     pd.DataFrame(data).to_csv(args.to_path)
