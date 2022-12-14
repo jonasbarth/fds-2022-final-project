@@ -7,9 +7,13 @@ import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 
 class Normalizer(BaseEstimator, TransformerMixin):
+    """A scikit pipeline step for normalising an image if not already normalised."""
     def __init__(self, means, stds):
         self.means = means
         self.stds = stds
+
+    def fit(self, X):
+        return self
 
     def transform(self, X):
         if not Normalizer.is_norm(X):
