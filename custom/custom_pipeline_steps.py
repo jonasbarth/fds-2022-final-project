@@ -3,6 +3,7 @@ from sklearn.preprocessing import FunctionTransformer
 from collections import defaultdict
 import numpy as np
 import pandas as pd
+import os
 
 
 class CustomNormalizer (BaseEstimator, TransformerMixin):
@@ -23,6 +24,9 @@ class CustomNormalizer (BaseEstimator, TransformerMixin):
                 np.save(new_path, img )
                 
         return X
+    
+    def fit(self, X, y=None):
+        return self
            
     @staticmethod 
     def is_norm (img):
@@ -91,3 +95,9 @@ def split(list_matrix, columns = []):
     return df
 
 Splitter = lambda cols: FunctionTransformer(func=split, kw_args= {'columns':cols})
+
+def loader(file_list):
+    '''Returns the loaded npy files'''
+    return file_list.applymap(lambda path: np.load(path))
+
+Loader = lambda: FunctionTransformer(func=loader)

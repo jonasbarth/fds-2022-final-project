@@ -1,1 +1,1 @@
-from .custom_pipeline_steps import ColorHistogram, Splitter, CustomNormalizer
+from .custom_pipeline_steps import ColorHistogram, Splitter, CustomNormalizer, Loader
