@@ -6,9 +6,13 @@ import pandas as pd
 import os
 
 
+
 class CustomNormalizer (BaseEstimator, TransformerMixin):
+    '''Pipeline step which normalizes only those images that are not already normalized'''
     def __init__ (self, means, std, path = 'og_dataset/splits/normalized/'):
         self.path = path
+        # means and std to be applied while normalizing
+        # This come from the stats_train.json file
         self.means = means
         self.std = std
         
@@ -16,9 +20,14 @@ class CustomNormalizer (BaseEstimator, TransformerMixin):
         X = X.copy()
         os.makedirs(self.path, exist_ok= True)
         for idx, row in X.iterrows():
+            # Loads image
             img = np.load(row.img_slice)
+            # is it's not already normalized, then normalize it
             if not CustomNormalizer.is_norm(img):
+                # Normalization
                 img = (img - self.means)/self.std
+                
+                # Save the normalized img in a **new** file
                 new_path = self.path + f'slice_{idx[0]}_img_{idx[1]}.npy'
                 X.loc[idx,'img_slice'] = new_path
                 np.save(new_path, img )
@@ -26,11 +35,15 @@ class CustomNormalizer (BaseEstimator, TransformerMixin):
         return X
     
     def fit(self, X, y=None):
+        # Nothing to learn
         return self
            
     @staticmethod 
     def is_norm (img):
+        # to detect whether an image is normalized we compute the sum of all its elements.
+        # If the sum is integer, then we consider it normalized
         return np.nansum(img) % 1 != 0
+        
         
 
 class ColorHistogram(BaseEstimator,TransformerMixin):
@@ -83,6 +96,7 @@ class ColorHistogram(BaseEstimator,TransformerMixin):
     def histogram(slice, bins, density=True):
         slice = slice[np.logical_not(np.isnan(slice))]
         if len(slice) == 0:
+            # if after deleting NaNs there's no element left, return array of NaNs
             return np.full(len(bins)-1,np.nan)
         return np.histogram(slice, bins, density=density)[0]
 
@@ -99,8 +113,9 @@ def split(list_matrix, columns = []):
 
 Splitter = lambda cols: FunctionTransformer(func=split, kw_args= {'columns':cols})
 
+
 def loader(file_list):
     '''Returns the loaded npy files'''
     return file_list.applymap(lambda path: np.load(path))
-
+'''Loads images into memory'''
 Loader = lambda: FunctionTransformer(func=loader)
