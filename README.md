@@ -3,7 +3,7 @@ Final Project for Fundamentals of Data Science 2022.
 
 # Contributors
 * Nemish Murawat
-* Matteo Migliarino
+* Matteo Migliarini
 * Mattia Castaldo
 * Javier Martinez
 * Jonas Barth
