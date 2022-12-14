@@ -4,6 +4,31 @@ from collections import defaultdict
 import numpy as np
 import pandas as pd
 
+
+class CustomNormalizer (BaseEstimator, TransformerMixin):
+    def __init__ (self, means, std, path = 'og_dataset/splits/normalized/'):
+        self.path = path
+        self.means = means
+        self.std = std
+        
+    def transform (self, X, y=None):
+        X = X.copy()
+        os.makedirs(self.path, exist_ok= True)
+        for idx, row in X.iterrows():
+            img = np.load(row.img_slice)
+            if not CustomNormalizer.is_norm(img):
+                img = (img - self.means)/self.std
+                new_path = self.path + f'slice_{idx[0]}_img_{idx[1]}.npy'
+                X.loc[idx,'img_slice'] = new_path
+                np.save(new_path, img )
+                
+        return X
+           
+    @staticmethod 
+    def is_norm (img):
+        return np.nansum(img) % 1 != 0
+        
+
 class ColorHistogram(BaseEstimator,TransformerMixin):
     '''Pipeline step which computes the histogram of values for each of the layers in an image'''
     def __init__(self, binning='doane'):
