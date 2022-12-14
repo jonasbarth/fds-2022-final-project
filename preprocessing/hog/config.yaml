@@ -1,0 +1,15 @@
+# This is a config file for defining values to be used in the preprocessing for Histogram of Gradients.
+source:
+  path:
+    dev: data/image/dev
+    test: data/image/test
+    train: data/image/train
+hog:
+  path:
+    dev: data/hog/dev
+    test: data/hog/test
+    train: data/hog/train
+  channels:
+    - [1, 2, 3]
+    - [6, 7, 8]
+    - [11, 12, 13]

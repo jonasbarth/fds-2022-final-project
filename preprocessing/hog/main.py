@@ -16,10 +16,10 @@ if __name__ == '__main__':
     metadata = pd.read_csv('./dataset/metadata.csv')
     metadata.img_slice = metadata.img_slice.apply(lambda path: path.split('/')[-1])
 
-    for source_path, hog_path in zip(vars(config.preprocess.source.path).values(), vars(config.preprocess.hog.path).values()):
+    for source_path, hog_path in zip(vars(config.source.path).values(), vars(config.hog.path).values()):
         filenames = get_img_file_names(source_path)
         # TODO create hog data for each channel
-        for channel in config.preprocess.hog.channels:
+        for channel in config.hog.channels:
             # subtract 1 since the channels in the config are 1-indexed.
             channel = np.array(channel)
             file_name_suffix = '_'.join(map(str, channel))
@@ -39,5 +39,5 @@ if __name__ == '__main__':
             label = metadata[metadata.img_slice == filename].label.values[0]
             labels.append(label)
 
-        labels = np.array([labels]).T
+        labels = np.array(labels)
         np.save(f'{hog_path}/labels.npy', labels)
