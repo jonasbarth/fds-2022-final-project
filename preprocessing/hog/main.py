@@ -2,6 +2,7 @@
 import argparse
 import logging
 import os
+import sys
 
 import munch
 import numpy as np
@@ -39,7 +40,11 @@ if __name__ == '__main__':
     # go through the dev, test, train, folders.
     for source_path, hog_path_key in zip(vars(config.source.path).values(), vars(config.hog.path)):
 
-        hog_metadata['type'] += [hog_path_key] * 3
+        if not os.path.exists(source_path):
+            logging.error(f'The provided source path {source_path} does not exist. Image data cannot be loaded.')
+            sys.exit(-1)
+
+        hog_metadata['type'] += [hog_path_key] * len(vars(config.hog.path))
         hog_path = config.hog.path[hog_path_key]
 
         logging.info(f"Reading image files from {source_path}")
@@ -66,7 +71,7 @@ if __name__ == '__main__':
             for images, names in load_arrays_batch(filenames, batch_size=10):
                 p = saving_pipeline(means, stds, channel, 214, 214, 1, data_output_path)
 
-                transformed = p.fit_transform(images)
+                p.fit_transform(images)
 
             logging.info(f"Saved HOG to: {data_output_path}.")
 
@@ -85,7 +90,7 @@ if __name__ == '__main__':
         np.save(labels_output_path, labels)
         logging.info(f'Saved labels to: {labels_output_path}.')
 
-        hog_metadata['label_path'] += [labels_output_path] * 3
+        hog_metadata['label_path'] += [labels_output_path] * len(vars(config.hog.path))
 
         # Create and save a dataframe containing HOG metadata
         pd.DataFrame(hog_metadata).to_csv(f'{config.hog.path.meta}/metadata.csv')

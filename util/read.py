@@ -37,10 +37,15 @@ def load_arrays_batch(filenames, batch_size=1):
     try:
         array_shape = (batch_size, *np.load(filenames[0]).shape)
         batch = np.zeros(array_shape)
+
         for i, filename in enumerate(filenames):
             batch[i % batch_size] = np.load(filename)
 
-            if i % batch_size == 0:
+            if i + 1 == len(filenames):
+                batch = np.delete(batch, (range(len(filenames) % batch_size, batch_size)), axis = 0)
+                yield batch, filenames[i:i + batch_size]
+
+            if (i + 1) % batch_size == 0:
                 yield batch, filenames[i:i + batch_size]
                 batch = np.zeros(array_shape)
     except ValueError as e:
