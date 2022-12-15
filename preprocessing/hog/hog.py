@@ -6,8 +6,21 @@ import numpy as np
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 
+
+class Flatten(BaseEstimator, TransformerMixin):
+    """A scikit pipeline step for flattening images."""
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X):
+        n_samples, nx, ny = X.shape
+        return X.reshape((n_samples, nx * ny))
+
+
 class Normalizer(BaseEstimator, TransformerMixin):
     """A scikit pipeline step for normalising an image if not already normalised."""
+
     def __init__(self, means, stds):
         self.means = means
         self.stds = stds
@@ -25,8 +38,10 @@ class Normalizer(BaseEstimator, TransformerMixin):
     def is_norm(img):
         return np.nansum(img) % 1 != 0
 
+
 class ChannelSelector(BaseEstimator, TransformerMixin):
     """A scikit pipeline step for selecting channels from an image."""
+
     def __init__(self, channels):
         self.channels = channels
 
@@ -36,6 +51,7 @@ class ChannelSelector(BaseEstimator, TransformerMixin):
     def transform(self, X):
         return np.take(X, self.channels, axis=3)
 
+
 class NanReplacer(BaseEstimator, TransformerMixin):
     """A scikit pipeline step for replacing nan values."""
 
@@ -44,6 +60,7 @@ class NanReplacer(BaseEstimator, TransformerMixin):
 
     def transform(self, X):
         return np.nan_to_num(X, nan=0)
+
 
 class DownSampler(BaseEstimator, TransformerMixin):
     """A scikit pipeline step for downsampling."""
@@ -154,7 +171,7 @@ def apply_gaussian(image, sigma=1):
 def create_hog(image):
     """Creates a histogram of gradients from the provided image."""
     return \
-    hog(image, orientations=8, pixels_per_cell=(16, 16), cells_per_block=(1, 1), visualize=True, channel_axis=-1)[1]
+        hog(image, orientations=8, pixels_per_cell=(16, 16), cells_per_block=(1, 1), visualize=True, channel_axis=-1)[1]
 
 
 def save_hog(hog_image, path):
@@ -165,6 +182,3 @@ def save_hog(hog_image, path):
     path - the path where the hog_image should be saved.
     """
     np.save(path, hog_image)
-
-
-
