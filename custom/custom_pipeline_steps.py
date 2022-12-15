@@ -119,3 +119,13 @@ def loader(file_list):
     return file_list.applymap(lambda path: np.load(path))
 '''Loads images into memory'''
 Loader = lambda: FunctionTransformer(func=loader)
+
+class ColumnSelector(BaseEstimator, TransformerMixin):
+    def __init__(self, bands=[]):
+        self.bands = bands
+    
+    def transform(self, X ,*_):
+        return X.loc[:,self.bands]
+    
+    def fit(self,*_):
+        return self
