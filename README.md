@@ -17,6 +17,9 @@ AWS S3 Links:
 * [test](https://fds-final-project.s3.amazonaws.com/test.zip)
 * [train](https://fds-final-project.s3.amazonaws.com/train.zip)
 
+# Final Report
+Editing link to the final report on overleaf: https://www.overleaf.com/2312131596hnsgrggxmgpp
+
 # Installing Requirements
 
 ## Conda
