@@ -41,7 +41,7 @@ def load_arrays_batch(filenames, batch_size=1):
         for i, filename in enumerate(filenames):
             batch[i % batch_size] = np.load(filename)
 
-            if i + 1 == len(filenames):
+            if i + 1 == len(filenames) and not ((i + 1) % batch_size == 0):
                 batch = np.delete(batch, (range(len(filenames) % batch_size, batch_size)), axis = 0)
                 yield batch, filenames[i:i + batch_size]
 

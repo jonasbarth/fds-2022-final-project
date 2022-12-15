@@ -93,4 +93,4 @@ if __name__ == '__main__':
         hog_metadata['label_path'] += [labels_output_path] * len(vars(config.hog.path))
 
         # Create and save a dataframe containing HOG metadata
-        pd.DataFrame(hog_metadata).to_csv(f'{config.hog.path.meta}/metadata.csv')
+        pd.DataFrame(hog_metadata).to_csv(f'{config.hog.meta}/metadata.csv')
