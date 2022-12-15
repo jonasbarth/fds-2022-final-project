@@ -33,7 +33,9 @@ if __name__ == '__main__':
     means = normalising.means.to_numpy()
     stds = normalising.stds.to_numpy()
 
+    # the metadata that we will save at the end of the preprocessing
     hog_metadata = {'channels': [], 'type': [], 'data_path': [], 'label_path': []}
+
     # go through the dev, test, train, folders.
     for source_path, hog_path_key in zip(vars(config.source.path).values(), vars(config.hog.path)):
 
@@ -84,6 +86,6 @@ if __name__ == '__main__':
         logging.info(f'Saved labels to: {labels_output_path}.')
 
         hog_metadata['label_path'] += [labels_output_path] * 3
-        # create a dataframe for each dataset that we save
-        # channels, path
+
+        # Create and save a dataframe containing HOG metadata
         pd.DataFrame(hog_metadata).to_csv(f'{config.hog.path.meta}/metadata.csv')
