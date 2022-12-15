@@ -1,9 +1,9 @@
 # This is a config file for defining values to be used in the preprocessing for Histogram of Gradients.
 source:
   path: # the path where to data will be loaded from.
-    dev: data/image/dev
-    test: data/image/test
-    train: data/image/train
+    dev: final_project/data/dev
+    test: final_project/data/test
+    train: final_project/data/train
 hog:
   path: # the path where the data will be saved.
     dev: data/hog/dev
