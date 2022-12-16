@@ -28,20 +28,28 @@ def show(img, kind='RGB'):
     else:
         channels = kind
     img = img[:,:,channels]
+    plt.axis('off')
     return plt.imshow(img)
+
+def show_img_mask(img, mask):
+    plt.subplot(1,2,1)
+    show(img, kind='RGB') 
+    plt.title('Image RGB')
+    plt.subplot(1,2,2)
+    show(mask, kind=[0])
+    plt.title('Mask')
+    plt.show()
 
 
 def show_bands(img, mask):
     '''Shows all the bands we are interested in for a given image'''
     bands_num = len(bands_combination) + 1
     plt.subplot(1, bands_num, 1)
-    plt.axis('off')
     plt.title('Glaciers:')
     show(mask, kind=0)
     for i, (name, band) in enumerate(bands_combination.items()):
         plt.subplot(1, bands_num, i+2)
         plt.title(name)
-        plt.axis('off')
         show(img, kind=name)
     plt.show()
     
