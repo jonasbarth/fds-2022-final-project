@@ -14,3 +14,15 @@ Running from the root of the project:
 ```bash
 python -m report.channels -i data/image/train/slice_12_img_136.npy -c 1,2,3:6,7,8:11,12,13 -o ./doc
 ```
+
+# mask
+The `masks.py` is a script that takes a mask as input, converts it to grayscale, and saves it as a `.jpg` file.
+
+It has the following flags:
+* `-m` the path to the mask.
+* `-o` the output directory. Will be created if it doesn't exist.
+
+Running from the root of the project:
+```bash
+python -m report.mask -i data/image/train/slice_12_mask_136.npy -o ./doc
+```
