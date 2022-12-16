@@ -53,6 +53,6 @@ if __name__ == '__main__':
 
         subset_image = cv2.cvtColor(subset_image, cv2.COLOR_BGR2RGB)
 
-        output_path = f'{args.output}/{image_output_name}.jpg'
+        output_path = f'{args.output}/channels_{image_output_name}.jpg'
         cv2.imwrite(output_path, subset_image * 255)
         logging.info(f'Image successfully saved at {output_path}')
