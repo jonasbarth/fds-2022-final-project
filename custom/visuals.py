@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from .env_variables import feature_names, bands_combination, channels_stats
+from .env_variables import *
 from .custom_pipeline_steps import CustomNormalizer
 
 def minmax_img(img):
@@ -32,6 +32,7 @@ def show(img, kind='RGB'):
     return plt.imshow(img)
 
 def show_img_mask(img, mask):
+    '''Shows an img and its mask side by side'''
     plt.subplot(1,2,1)
     show(img, kind='RGB') 
     plt.title('Image RGB')
@@ -53,10 +54,30 @@ def show_bands(img, mask):
         show(img, kind=name)
     plt.show()
     
-def show_hist(img, hist, channel):
+def show_hist(hist, kind='RGB', **params):
+    '''Shows a band selection of an histogram of colors'''
+    gh = hist.reset_index(level=0, name='density')
+    gh.rename(columns={'level_0':'channel'}, inplace=True)
+    gh = gh[(gh.density!=0) & (gh.channel.isin(bands_combination[kind]))]
+    g = sns.barplot(data=gh, y='density', x=gh.index, hue='channel', palette=bands_palette[kind], **params)
+    sns.despine(bottom=True)
+    g.set(xticklabels=[])
+    g.tick_params(bottom=False)
+    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0)
+    plt.title('Histogram of Colors')
+    plt.xlabel(kind+' channels')
+    return g
+
+def show_img_hist(img, hist, channel='RGB'):
+    '''Shows an image and its histogram side by side'''
+    plt.figure(figsize=(10,20))
     plt.subplot(1,2,1)
-    show(img)
-    plt.subplot(1,2,2)
-    hist = hist.loc[feature_names[channel]]
-    plt.bar(x=hist.index, height=hist)
+    show(img, kind=channel)
+    ax2 = plt.subplot(1,2,2)
+    show_hist(hist, kind=channel)
+    # keep same size for both subplots
+    asp = np.diff(ax2.get_xlim())[0] / np.diff(ax2.get_ylim())[0]
+    ax2.set_aspect(asp)
+    plt.tight_layout()
     plt.show()
+
