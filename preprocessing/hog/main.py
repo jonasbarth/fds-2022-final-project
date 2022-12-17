@@ -44,7 +44,7 @@ if __name__ == '__main__':
             logging.error(f'The provided source path {source_path} does not exist. Image data cannot be loaded.')
             sys.exit(-1)
 
-        hog_metadata['type'] += [hog_path_key] * len(vars(config.hog.path))
+        hog_metadata['type'] += [hog_path_key] * len(config.hog.channels)
         hog_path = config.hog.path[hog_path_key]
 
         logging.info(f"Reading image files from {source_path}")
@@ -90,7 +90,7 @@ if __name__ == '__main__':
         np.save(labels_output_path, labels)
         logging.info(f'Saved labels to: {labels_output_path}.')
 
-        hog_metadata['label_path'] += [labels_output_path] * len(vars(config.hog.path))
+        hog_metadata['label_path'] += [labels_output_path] * len(config.hog.channels)
 
         # Create and save a dataframe containing HOG metadata
         pd.DataFrame(hog_metadata).to_csv(f'{config.hog.meta}/metadata.csv')
