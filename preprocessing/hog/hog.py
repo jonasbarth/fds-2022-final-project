@@ -49,7 +49,7 @@ class ChannelSelector(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, X):
-        return np.take(X, self.channels, axis=3)
+        return np.take(X, self.channels, axis=len(X.shape) - 1)
 
 
 class NanReplacer(BaseEstimator, TransformerMixin):
