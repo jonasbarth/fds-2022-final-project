@@ -9,6 +9,21 @@ import numpy as np
 
 from preprocessing.hog import ChannelSelector
 
+def parse_channels(channels):
+    """Parses channel input into lists of channels.
+
+    :arg
+    channels (str) - a string of format channel,channel,channel:channel,....
+
+    :return
+    an iterable of parsed channels.
+    """
+    channels = channels.split(':')
+    channels = map(lambda c: list(map(int, c.split(','))), channels)
+
+    return channels
+
+
 if __name__ == '__main__':
     # Setting up logging
     logging.root.setLevel(logging.INFO)
@@ -32,8 +47,7 @@ if __name__ == '__main__':
 
     logging.info(f'Successfully loaded image from {image_path}')
 
-    channels = args.channels.split(':')
-    channels = map(lambda c: list(map(int, c.split(','))), channels)
+    channels = parse_channels(args.channels)
 
     # create the output directory if it doesn't exist
     if not os.path.exists(args.output):
