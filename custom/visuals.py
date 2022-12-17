@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from .env_variables import *
 from .custom_pipeline_steps import CustomNormalizer
+from matplotlib.lines import Line2D
+
 
 def minmax_img(img):
     mins = np.array(channels_stats['mins'])
@@ -81,3 +83,22 @@ def show_img_hist(img, hist, channel='RGB'):
     plt.tight_layout()
     plt.show()
 
+
+def legend_plot(size=12):
+    '''Plots the legend for the final graph: performance comparison'''
+    points = [
+        # Histogram of Colors
+        Line2D([0], [0], color='darkorange', lw=1, label='Histogram of Colors'),
+            Line2D([0], [0], color='darkorange', marker='^', markersize=size, lw=0, label='K-NN'), # KNN
+            Line2D([0], [0], color='darkorange', marker='o', markersize=size, lw=0, label='Logistic Regression'), # Linear Regression
+            Line2D([0], [0], color='darkorange', marker='X', markersize=size, lw=0, label='Naïve Bayes'), # Bayes
+        # Histogram of gradients
+        Line2D([0], [0], color='darkcyan', lw=1, label='Histogram of Gradients'),
+            Line2D([0], [0], color='darkcyan', marker='^', markersize=size, lw=0, label='K-NN'), # KNN
+            Line2D([0], [0], color='darkcyan', marker='o', markersize=size, lw=0, label='Logistic Regression'), # Linear Regression
+        # CNN
+        Line2D([0], [0], color='orchid', lw=1, label='Neural Networks'),
+            Line2D([0], [0], color='orchid', marker='*', markersize=size, lw=0, label='CNN'), # CNN
+    ]
+
+    return plt.legend(bbox_to_anchor=(1,.5),handles=points, frameon=False)
