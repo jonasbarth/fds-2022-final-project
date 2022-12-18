@@ -104,8 +104,8 @@ class Hog(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, X):
-        hogged = np.zeros(X.shape[:-1])
-        for i in range(X.shape[0]):
+        hogged = np.zeros((X.shape[0], *create_hog(X[0]).shape))
+        for i in range(1, X.shape[0]):
             hogged[i] = create_hog(X[i])
 
         return hogged
@@ -171,7 +171,7 @@ def apply_gaussian(image, sigma=1):
 def create_hog(image):
     """Creates a histogram of gradients from the provided image."""
     return \
-        hog(image, orientations=8, pixels_per_cell=(16, 16), cells_per_block=(1, 1), visualize=True, channel_axis=-1)[1]
+        hog(image, orientations=8, pixels_per_cell=(16, 16), cells_per_block=(1, 1), visualize=True, channel_axis=-1)[0]
 
 
 def save_hog(hog_image, path):
