@@ -1,0 +1,22 @@
+# This is a config file for defining values to be used in the preprocessing for Histogram of Gradients.
+source:
+  path: # the path where to data will be loaded from.
+    dev: data/image/dev
+    test: data/image/test
+    train: data/image/train
+hog:
+  path: # the path where the data will be saved.
+    dev: data/hog/dev
+    test: data/hog/test
+    train: data/hog/train
+  meta: data/hog/
+  normalising: dataset/channel_mean_std.csv
+  channels: # the different channels that will be used. In the end, there will be one dataset per channel.
+    - [1, 2, 3]
+    - [6, 7, 8]
+    - [11, 12, 13]
+    - [2, 4, 5]
+  params: # parameters for the scikit image hog function.
+    orientations: 8
+    pixels_per_cell: [16, 16]
+    cells_per_block: [1, 1]
