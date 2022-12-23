@@ -56,7 +56,7 @@ if __name__ == '__main__':
 
     for channel in channels:
         logging.info(f'Extracting channels: {channel} from image.')
-        subset_image = ChannelSelector(channels=channel).fit_transform(image)
+        subset_image = ChannelSelector(channels=np.array(channel) - 1).fit_transform(image)
 
         for i in range(len(channel)):
             min_ = np.min(subset_image[:, :, i])
@@ -64,8 +64,6 @@ if __name__ == '__main__':
             subset_image[:, :, i] = (subset_image[:, :, i] - min_) / (max_ - min_)
 
         image_output_name = '_'.join(map(str, channel))
-
-        subset_image = cv2.cvtColor(subset_image, cv2.COLOR_BGR2RGB)
 
         output_path = f'{args.output}/channels_{image_output_name}.jpg'
         cv2.imwrite(output_path, subset_image * 255)
