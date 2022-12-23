@@ -5,11 +5,13 @@ import logging
 import os
 import sys
 
+import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
+from skimage.feature import hog
 
-from channels import parse_channels
-from preprocessing.hog import Hog, ChannelSelector
+from preprocessing.hog import ChannelSelector
+from .channels import parse_channels
 
 if __name__ == '__main__':
     # Setting up logging
@@ -42,14 +44,20 @@ if __name__ == '__main__':
     for channel in channels:
         logging.info(f'Extracting channels: {channel} from image.')
 
-        subset_image = ChannelSelector(channels=channel).fit_transform(image)
-        subset_image = Hog().transform(subset_image) * 255
+        subset_image = ChannelSelector(channels=np.array(channel) - 1).fit_transform(image)
+        hist, subset_image = hog(subset_image[0], orientations=8, pixels_per_cell=(16, 16), cells_per_block=(1, 1), visualize=True, channel_axis=-1)
+        subset_image *= 255
         subset_image = subset_image.astype(np.uint8)
+
+        plt.hist(hist, color='teal')
+        plt.ylabel('Gradient Magnitude')
+        plt.xlabel('Orientation (Normalised)')
 
         image_output_name = '_'.join(map(str, channel))
 
-        subset_image = Image.fromarray(subset_image[0])
+        subset_image = Image.fromarray(subset_image)
 
         output_path = f'{args.output}/hog_{image_output_name}_{args.image.split("/")[-1].split(".")[0]}.jpg'
+        plt.savefig(f'{args.output}/hist_{image_output_name}_{args.image.split("/")[-1].split(".")[0]}.eps', format='eps')
         subset_image.save(output_path)
         logging.info(f'Image successfully saved at {output_path}')
