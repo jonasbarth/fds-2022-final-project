@@ -1,5 +1,6 @@
 # Final Project
-Final Project for Fundamentals of Data Science 2022.
+Final Project for Fundamentals of Data Science 2022. The project aim is to classify Landsat 7 satellite images from the
+Hindu Kush Himalaya region into glacier and non-glacier.
 
 # Contributors
 * Nemish Murawat
@@ -8,61 +9,28 @@ Final Project for Fundamentals of Data Science 2022.
 * Javier Martinez
 * Jonas Barth
 
-# Resources
+# Report
+We produced a [report](doc/FDS_Final_Project_Report.pdf) where we summarise our findings.
+
+# Inspiration
 [Paper](https://s3.us-east-1.amazonaws.com/climate-change-ai/papers/neurips2020/57/paper.pdf) that we base the project on.
 
-# Data (ask Jonas to start lab to make the data available)
-AWS S3 Links:
+# Data
+AWS S3 Links for the raw data that we used:
 * [dev](https://fds-final-project.s3.amazonaws.com/dev.zip)
 * [test](https://fds-final-project.s3.amazonaws.com/test.zip)
 * [train](https://fds-final-project.s3.amazonaws.com/train.zip)
 
-# Final Report
-Editing link to the final report on overleaf: https://www.overleaf.com/2312131596hnsgrggxmgpp
+# Structure
+* `custom` - contains custom pipeline functionalities.
+* `dataset` - contains metadata.
+* `model` - contains the models we used.
+* `preprocessing` - contains logic for preprocessing.
+* `report` - contains scripts for generating visuals for the report.
+* `script` - contains some scripts for data exploration.
+* `util` - utility functions.
 
 # Installing Requirements
-
-## Conda
-They should all be installed already.
-
-## pip
 ```
 pip install -r requirements.txt
 ```
-
-# Structure
-
-![project_structure](doc/structure.svg)
-
-## Data
-These are our image patches from the 35 Landsat satellite images.
-
-## Classifiers
-Our goal is to *determine whether an image contains a glacier or not*. For this we have multiple classifiers.
-Each of the classifiers will need receive differently preprocessed data. For example, the _KNN_ will "train" on a
-a [Histogram of Oriented Gradients](https://towardsdatascience.com/hog-histogram-of-oriented-gradients-67ecd887675f),
-whereas the _CNN_ might train on the actual image with a selection of channels.
-
-### 1. KNN
-
-#### Preprocess
-
-#### Fit/Train
-
-#### Evaluate
-
-### 2. CNN
-
-#### Preprocess
-
-#### Fit/Train
-
-#### Evaluate
-
-### 3. SVM (Maybe)
-
-#### Preprocess
-
-#### Fit/Train
-
-#### Evaluate
