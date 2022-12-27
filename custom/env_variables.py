@@ -3,7 +3,7 @@ import seaborn as sns
 
 bands_combination = {
     'RGB':['LE7 B3 (red)', 'LE7 B2 (green)','LE7 B1 (blue)'],
-    '6-8' : ['LE7 B7 (shortwave infrared 2)','LE7 B6_VCID_1 (low-gain thermal infrared)','LE7 B6_VCID_2 (high-gain thermal infrared)'],
+    '6-7-8' : ['LE7 B7 (shortwave infrared 2)','LE7 B6_VCID_1 (low-gain thermal infrared)','LE7 B6_VCID_2 (high-gain thermal infrared)'],
     '5-4-2' : ['LE7 B5 (shortwave infrared 1)','LE7 B4 (near infrared)','LE7 B2 (green)'],
     '11-12-13' : ['NDVI (vegetation index)', 'NDSI (snow index)', 'NDWI (water index)'],
     # 'LE7' : ['LE7 B1 (blue)', 'LE7 B2 (green)',
@@ -38,6 +38,6 @@ hist_bins = np.load('dataset/histogram_bins.npy',allow_pickle=True)[()]
 
 bands_palette = {
     'RGB': [sns.color_palette(palette='deep')[i] for i in [0,2,1]],
-    '6-8' : 'magma',
+    '6-7-8' : 'magma',
     '5-4-2' : "mako",
     '11-12-13' : "viridis"}
